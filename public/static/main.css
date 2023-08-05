@@ -23,9 +23,9 @@ aside{
   padding-top: 5px;
 }
 
-.box-container{
+/* .box-container{
   width:100px;
-}
+} */
 
 p{
   margin: 8px 5px;
@@ -38,6 +38,7 @@ p{
 
 .rep-button{
   font-size: .7rem;
+  margin: 1px
 }
 
 .rep-{

@@ -9,7 +9,7 @@ const defaultR = createDefaultRoutine();
 const tracker = new Tracker(defaultR);
 const main = document.getElementsByTagName('main')[0];
 
-tracker.displayWorkouts()
+// tracker.displayWorkouts()
 const addForm = document.getElementById('add-workout-form') as HTMLFormElement;
 const removeForm = document.getElementById(
   'remove-workout-form'
@@ -25,14 +25,16 @@ removeForm.addEventListener('submit', (e) => {
 });
 
 function getFormData(form: HTMLFormElement) {
+  console.log(form);
   const formData = new FormData(form);
-  console.log(formData);
-  const workoutValue = formData.get(`add-workout`);
-  const removeValue = formData.get(`remove-workout`);
-  if (workoutValue) {
+  if (form.id === 'add-workout-form') {
+    const workoutValue = formData.get(`add-workout`);
     const repsValue = parseInt(formData.get(`reps`)!.toString());
     tracker.routine.addWorkout(workoutValue!.toString(), repsValue);
-  } else tracker.routine.removeWorkout(removeValue!.toString());
+  } else {
+    const removeValue = formData.get(`remove-workout`);
+    tracker.routine.removeWorkout(removeValue!.toString());
+  }
   displayWorkouts(tracker.routine.workouts);
 }
 
@@ -51,19 +53,26 @@ function createWorkoutDiv(workout: Workout): HTMLDivElement {
   const p = document.createElement('p');
   updatePText(p, workout);
   div.append(p);
+  const boxContainer = addButtonstoContainer(workout,p)
+  div.appendChild(boxContainer);
+
+  return div;
+}
+
+function addButtonstoContainer(workout: Workout,p:HTMLParagraphElement): HTMLDivElement {
+  const boxContainer = document.createElement('div');
   for (const direction of ['-', '+']) {
-    const boxContainer = createButtonFlex();
-    boxContainer.append(document.createElement('br'));
+    const boxRow = createButtonFlex();
     for (const label of [10, 5, 1]) {
       const repButton = createRepButtons(direction, label);
       repButton.addEventListener('click', () => {
         adjustReps(workout, parseInt(`${direction}${label}`), p);
       });
-      boxContainer.appendChild(repButton);
-      div.appendChild(boxContainer);
+      boxRow.appendChild(repButton);
     }
+    boxContainer.appendChild(boxRow);
   }
-  return div;
+  return boxContainer;
 }
 
 function createRepButtons(
@@ -71,7 +80,7 @@ function createRepButtons(
   quantity: number = 1
 ): HTMLButtonElement {
   const repButton = document.createElement('button');
-  repButton.className = `rep-button rep${direction}`
+  repButton.className = `rep-button rep${direction}`;
   repButton.innerText = direction === '+' ? `+${quantity}` : `-${quantity}`;
   return repButton;
 }
@@ -93,13 +102,3 @@ function createButtonFlex(): HTMLDivElement {
   boxDiv.style.justifyContent = 'space-between';
   return boxDiv;
 }
-
-function createWorkoutElement() {}
-
-// const addWorkoutInput = document.createElement('input')
-// addWorkoutInput.id = 'add-workout'
-// const repsInput = document.createElement('input')
-// repsInput.id = 'add-reps'
-// addForm.insertBefore(addWorkoutInput,addForm.firstChild)
-// const removeWorkoutInput = document.createElement('input')
-// removeWorkoutInput.id = 'remove-workout'
