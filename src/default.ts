@@ -1,6 +1,6 @@
-import Routine from './oop/Routine';
-import Workout from './oop/Workout';
-import Tracker from './oop/Tracker';
+import Routine from './tracker/Routine';
+import Workout from './tracker/Workout';
+import Tracker from './tracker/Tracker';
 
 const workouts: Workout[] = [
   new Workout('pushups', 50),

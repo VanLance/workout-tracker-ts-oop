@@ -15,7 +15,7 @@ main{
   column-gap:5%;
 }
 
-aside{
+aside {
   margin-top: 5%;
   display: flex;
   justify-content: flex-start;
@@ -27,9 +27,8 @@ aside{
   width:100px;
 } */
 
-p{
+p {
   margin: 8px 5px;
-  padding: auto auto
 }
 
 .submit-button{
