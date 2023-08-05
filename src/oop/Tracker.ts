@@ -25,8 +25,6 @@ export default class Tracker {
   displayWorkouts() {
     const workouts = this.routine.workouts;
     const button = document.createElement('button')
-    button.innerText = 'Test'
-    document.body.appendChild(button)
     for (const k in workouts) console.log(`${k}: ${workouts[k].reps} `);
   }
 }

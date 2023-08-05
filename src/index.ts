@@ -71,6 +71,7 @@ function createRepButtons(
   quantity: number = 1
 ): HTMLButtonElement {
   const repButton = document.createElement('button');
+  repButton.className = `rep-button rep${direction}`
   repButton.innerText = direction === '+' ? `+${quantity}` : `-${quantity}`;
   return repButton;
 }
