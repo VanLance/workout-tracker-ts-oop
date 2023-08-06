@@ -1,6 +1,6 @@
 import Workout from './Workout';
 
-export interface Workouts {
+interface Workouts {
   [key: string]: Workout;
 }
 
@@ -35,4 +35,8 @@ export default class Routine {
   }
 
  
+}
+
+export {
+  Workouts
 }
