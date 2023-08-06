@@ -29,10 +29,6 @@ aside {
   padding-top: 5px;
 }
 
-/* .box-container{
-  width:100px;
-} */
-
 p {
   margin: 8px 5px;
 }
@@ -48,4 +44,10 @@ p {
 
 .rep-{
   padding:1px 6px
+}
+
+@media screen and (max-width: 390px) {
+  form:nth-child(2) {
+    display: none;
+  }
 }
