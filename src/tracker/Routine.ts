@@ -4,6 +4,7 @@ export interface Workouts {
   [key: string]: Workout;
 }
 
+// Plans to make abstract -> children in routines file 
 export default class Routine {
   private _workouts: Workouts = {};
 

@@ -1,104 +1,111 @@
-// import Routine, { Workouts } from './oop/Routine';
-// import Workout from './oop/Workout';
-// import Tracker from './oop/Tracker';
-// import { createDefaultRoutine } from './default';
+// handles index functionality with functional programming rather than oop
 
-// const workouts: Workout[] = [];
-// const routine = new Routine();
-// const defaultR = createDefaultRoutine();
-// const tracker = new Tracker(defaultR);
-// const main = document.getElementsByTagName('main')[0];
+/* import { Workouts } from './tracker/Routine';
+import Workout from './tracker/Workout';
+import Tracker from './tracker/Tracker';
+import { FullBodyRoutine } from './tracker/routines';
 
-// // tracker.displayWorkouts()
-// const addForm = document.getElementById('add-workout-form') as HTMLFormElement;
-// const removeForm = document.getElementById(
-//   'remove-workout-form'
-// ) as HTMLFormElement;
+const defaultR = new FullBodyRoutine();
+const tracker = new Tracker(defaultR);
+const main = document.getElementsByTagName('main')[0];
 
-// addForm.addEventListener('submit', (e) => {
-//   e.preventDefault();
-//   getFormData(addForm);
-// });
-// removeForm.addEventListener('submit', (e) => {
-//   e.preventDefault();
-//   getFormData(removeForm);
-// });
+const addForm = document.getElementById('add-workout-form') as HTMLFormElement;
+const removeForm = document.getElementById(
+  'remove-workout-form'
+) as HTMLFormElement;
 
-// function getFormData(form: HTMLFormElement) {
-//   console.log(form);
-//   const formData = new FormData(form);
-//   if (form.id === 'add-workout-form') {
-//     const workoutValue = formData.get(`add-workout`);
-//     const repsValue = parseInt(formData.get(`reps`)!.toString());
-//     tracker.routine.addWorkout(workoutValue!.toString(), repsValue);
-//   } else {
-//     const removeValue = formData.get(`remove-workout`);
-//     tracker.routine.removeWorkout(removeValue!.toString());
-//   }
-//   displayWorkouts(tracker.routine.workouts);
-// }
+addForm.addEventListener('submit', (e: SubmitEvent): void => {
+  e.preventDefault();
+  getFormData(addForm);
+});
+removeForm.addEventListener('submit', (e: SubmitEvent): void => {
+  e.preventDefault();
+  getFormData(removeForm);
+});
 
-// displayWorkouts(defaultR.workouts);
+function getFormData(form: HTMLFormElement): void {
+  console.log(form);
+  const formData = new FormData(form);
+  if (form.id === 'add-workout-form') {
+    const workoutValue = formData.get(`add-workout`);
+    const repsValue = parseInt(formData.get(`reps`)!.toString());
+    tracker.routine.addWorkout(workoutValue!.toString(), repsValue);
+  } else {
+    const removeValue = formData.get(`remove-workout`);
+    tracker.routine.removeWorkout(removeValue!.toString());
+  }
+  displayWorkouts(tracker.routine.workouts);
+}
 
-// function displayWorkouts(workouts: Workouts) {
-//   main.innerHTML = '';
-//   for (const workout of Object.values(workouts)) {
-//     const div = createWorkoutDiv(workout);
-//     main.appendChild(div);
-//   }
-// }
+displayWorkouts(defaultR.workouts);
 
-// function createWorkoutDiv(workout: Workout): HTMLDivElement {
-//   const div = document.createElement('div');
-//   const p = document.createElement('p');
-//   updatePText(p, workout);
-//   div.append(p);
-//   const boxContainer = addButtonstoContainer(workout,p)
-//   div.appendChild(boxContainer);
+function displayWorkouts(workouts: Workouts): void {
+  main.innerHTML = '';
+  for (const workout of Object.values(workouts)) {
+    const div = createWorkoutDiv(workout);
+    main.appendChild(div);
+  }
+}
 
-//   return div;
-// }
+function createWorkoutDiv(workout: Workout): HTMLDivElement {
+  const div = document.createElement('div');
+  const p = document.createElement('p');
+  updatePText(p, workout);
+  div.append(p);
+  const boxContainer = addButtonstoContainer(workout, p);
+  div.appendChild(boxContainer);
 
-// function addButtonstoContainer(workout: Workout,p:HTMLParagraphElement): HTMLDivElement {
-//   const boxContainer = document.createElement('div');
-//   for (const direction of ['-', '+']) {
-//     const boxRow = createButtonFlex();
-//     for (const label of [10, 5, 1]) {
-//       const repButton = createRepButtons(direction, label);
-//       repButton.addEventListener('click', () => {
-//         adjustReps(workout, parseInt(`${direction}${label}`), p);
-//       });
-//       boxRow.appendChild(repButton);
-//     }
-//     boxContainer.appendChild(boxRow);
-//   }
-//   return boxContainer;
-// }
+  return div;
+}
 
-// function createRepButtons(
-//   direction: string,
-//   quantity: number = 1
-// ): HTMLButtonElement {
-//   const repButton = document.createElement('button');
-//   repButton.className = `rep-button rep${direction}`;
-//   repButton.innerText = direction === '+' ? `+${quantity}` : `-${quantity}`;
-//   return repButton;
-// }
+function addButtonstoContainer(
+  workout: Workout,
+  p: HTMLParagraphElement
+): HTMLDivElement {
+  const boxContainer = document.createElement('div');
+  for (const direction of ['-', '+']) {
+    const boxRow = createButtonFlex();
+    for (const label of [10, 5, 1]) {
+      const repButton = createRepButtons(direction, label);
+      repButton.addEventListener('click', () => {
+        adjustReps(workout, parseInt(`${direction}${label}`), p);
+      });
+      boxRow.appendChild(repButton);
+    }
+    boxContainer.appendChild(boxRow);
+  }
+  return boxContainer;
+}
 
-// function adjustReps(workout: Workout, reps: number, p: HTMLParagraphElement) {
-//   workout.reps += reps;
-//   updatePText(p, workout);
-// }
+function createRepButtons(
+  direction: string,
+  quantity: number = 1
+): HTMLButtonElement {
+  const repButton = document.createElement('button');
+  repButton.className = `rep-button rep${direction}`;
+  repButton.innerText = direction === '+' ? `+${quantity}` : `-${quantity}`;
+  return repButton;
+}
 
-// function updatePText(p: HTMLParagraphElement, workout: Workout) {
-//   p.innerText = `${workout.name}
-//   reps: ${workout.reps}`;
-// }
+function adjustReps(
+  workout: Workout,
+  reps: number,
+  p: HTMLParagraphElement
+): void {
+  workout.reps += reps;
+  updatePText(p, workout);
+}
 
-// function createButtonFlex(): HTMLDivElement {
-//   const boxDiv = document.createElement('div');
-//   boxDiv.className = 'box-container';
-//   boxDiv.style.display = 'flex';
-//   boxDiv.style.justifyContent = 'space-between';
-//   return boxDiv;
-// }
+function updatePText(p: HTMLParagraphElement, workout: Workout): void {
+  p.innerText = `${workout.name}
+  reps: ${workout.reps}`;
+}
+
+function createButtonFlex(): HTMLDivElement {
+  const boxDiv = document.createElement('div');
+  boxDiv.className = 'box-container';
+  boxDiv.style.display = 'flex';
+  boxDiv.style.justifyContent = 'space-between';
+  return boxDiv;
+}
+ */

@@ -1,7 +1,7 @@
-import Routine, { Workouts } from './tracker/Routine';
+import { Workouts } from './tracker/Routine';
 import Workout from './tracker/Workout';
 import Tracker from './tracker/Tracker';
-import { createDefaultRoutine } from './default';
+import { FullBodyRoutine } from './tracker/routines';
 
 class WorkoutApp {
   private addForm: HTMLFormElement;
@@ -17,16 +17,14 @@ class WorkoutApp {
       'remove-workout-form'
     ) as HTMLFormElement;
     this.main = document.getElementsByTagName('main')[0];
-
-    this.tracker = new Tracker(createDefaultRoutine());
-
+    this.tracker = new Tracker(new FullBodyRoutine());
     this.tracker.displayWorkouts();
     this.addForm.addEventListener('submit', this.getFormData.bind(this));
     this.removeForm.addEventListener('submit', this.getFormData.bind(this));
-    this.displayWorkouts(createDefaultRoutine().workouts);
+    this.displayWorkouts(this.tracker.routine.workouts);
   }
 
-  private getFormData(e: Event) {
+  private getFormData(e: SubmitEvent): void {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
@@ -56,9 +54,16 @@ class WorkoutApp {
     this.updatePText(p, workout);
     div.append(p);
     const boxContainer = this.addButtonstoContainer(workout, p);
-    div.appendChild(boxContainer);
-
+    div.append(boxContainer, this.removeButton(div));
     return div;
+  }
+
+  removeButton(div: HTMLDivElement): HTMLButtonElement {
+    const rButton = document.createElement('button');
+    rButton.innerText = 'Remove';
+    rButton.style.marginTop = '2px';
+    rButton.addEventListener('click', () => div.remove());
+    return rButton;
   }
 
   addButtonstoContainer(
@@ -90,12 +95,16 @@ class WorkoutApp {
     return repButton;
   }
 
-  private adjustReps(workout: Workout, reps: number, p: HTMLParagraphElement) {
+  private adjustReps(
+    workout: Workout,
+    reps: number,
+    p: HTMLParagraphElement
+  ): void {
     workout.reps += reps;
     this.updatePText(p, workout);
   }
 
-  private updatePText(p: HTMLParagraphElement, workout: Workout) {
+  private updatePText(p: HTMLParagraphElement, workout: Workout): void {
     p.innerText = `${workout.name} 
   reps: ${workout.reps}`;
   }

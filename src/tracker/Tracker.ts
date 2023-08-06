@@ -10,19 +10,19 @@ export default class Tracker {
 
   constructor(private _routine: Routine) {}
 
-  completeReps(reps: number, workout: string) {
+  completeReps(reps: number, workout: string):void {
     this.routine.workouts[workout].reps -= reps;
   }
 
-  addReps(amount: number, workout: string) {
+  addReps(amount: number, workout: string):void {
     this.routine.workouts[workout].reps += amount;
   }
 
-  finishWorkOut(workout: string) {
+  finishWorkOut(workout: string):void {
     this.routine.workouts[workout].reps = 0;
   }
 
-  displayWorkouts() {
+  displayWorkouts():void {
     const workouts = this.routine.workouts;
     for (const k in workouts) console.log(`${k}: ${workouts[k].reps} `);
   }
